@@ -1,4 +1,4 @@
-package br.ufrn.imd.patterns;
+package br.ufrn.imd.patterns.identification;
 
 import java.util.HashMap;
 import java.util.Map;
