@@ -31,8 +31,8 @@ public class SmartHome {
 	}
 	
 	@Post(router = "/regulate")
-	public void setThermostatTemp(int thermostatTemp) {
-		this.thermostatTemp = thermostatTemp;
+	public void setThermostatTemp(JSONObject jsonObject) {
+		this.thermostatTemp = jsonObject.getInt("var1");
 	}
 	
 	@Post(router = "/switch")
