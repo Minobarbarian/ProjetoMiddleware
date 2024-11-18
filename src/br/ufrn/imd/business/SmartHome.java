@@ -2,9 +2,9 @@ package br.ufrn.imd.business;
 
 import org.json.JSONObject;
 
-import br.ufrn.imd.annotations.Get;
-import br.ufrn.imd.annotations.Post;
 import br.ufrn.imd.annotations.RequestMap;
+import br.ufrn.imd.annotations.http.Get;
+import br.ufrn.imd.annotations.http.Post;
 
 @RequestMap(router = "/smart")
 public class SmartHome {

@@ -1,4 +1,4 @@
-package br.ufrn.imd.annotations;
+package br.ufrn.imd.annotations.http;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Patch {
+public @interface Post {
 	public String router() default "";
 }

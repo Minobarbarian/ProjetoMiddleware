@@ -6,11 +6,11 @@ import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
 
-import br.ufrn.imd.annotations.Delete;
-import br.ufrn.imd.annotations.Get;
-import br.ufrn.imd.annotations.Post;
-import br.ufrn.imd.annotations.Put;
 import br.ufrn.imd.annotations.RequestMap;
+import br.ufrn.imd.annotations.http.Delete;
+import br.ufrn.imd.annotations.http.Get;
+import br.ufrn.imd.annotations.http.Post;
+import br.ufrn.imd.annotations.http.Put;
 import br.ufrn.imd.patterns.basicremoting.RemoteObject;
 import br.ufrn.imd.patterns.basicremoting.ServerRequestHandler;
 import br.ufrn.imd.patterns.identification.AbsoluteObjectReference;
