@@ -1,4 +1,4 @@
-package br.ufrn.imd.patterns;
+package br.ufrn.imd.patterns.basicremoting;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

@@ -8,8 +8,8 @@ import com.sun.net.httpserver.HttpServer;
 import br.ufrn.imd.middleware.annotations.Get;
 import br.ufrn.imd.middleware.annotations.Post;
 import br.ufrn.imd.middleware.annotations.RequestMap;
-import br.ufrn.imd.patterns.RemoteObject;
-import br.ufrn.imd.patterns.ServerRequestHandler;
+import br.ufrn.imd.patterns.basicremoting.RemoteObject;
+import br.ufrn.imd.patterns.basicremoting.ServerRequestHandler;
 
 public class Nelionator {
 	private HttpServer server;

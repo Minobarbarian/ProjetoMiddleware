@@ -1,4 +1,4 @@
-package br.ufrn.imd.patterns;
+package br.ufrn.imd.patterns.basicremoting;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
