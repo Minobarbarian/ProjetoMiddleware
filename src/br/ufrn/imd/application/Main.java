@@ -12,7 +12,7 @@ public class Main {
 		
 		Nelionator server = new Nelionator();
 		
-		server.addMethods(smart);
+		server.addComponents(smart);
 		
 		server.start(4242);
 	}
