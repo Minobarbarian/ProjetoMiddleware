@@ -1,4 +1,4 @@
-package br.ufrn.imd.middleware;
+package br.ufrn.imd.broker;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -6,11 +6,11 @@ import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
 
-import br.ufrn.imd.middleware.annotations.Delete;
-import br.ufrn.imd.middleware.annotations.Get;
-import br.ufrn.imd.middleware.annotations.Post;
-import br.ufrn.imd.middleware.annotations.Put;
-import br.ufrn.imd.middleware.annotations.RequestMap;
+import br.ufrn.imd.annotations.Delete;
+import br.ufrn.imd.annotations.Get;
+import br.ufrn.imd.annotations.Post;
+import br.ufrn.imd.annotations.Put;
+import br.ufrn.imd.annotations.RequestMap;
 import br.ufrn.imd.patterns.basicremoting.RemoteObject;
 import br.ufrn.imd.patterns.basicremoting.ServerRequestHandler;
 import br.ufrn.imd.patterns.identification.AbsoluteObjectReference;

@@ -1,4 +1,4 @@
-package br.ufrn.imd.middleware.annotations;
+package br.ufrn.imd.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
