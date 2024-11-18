@@ -8,12 +8,13 @@ import com.sun.net.httpserver.HttpServer;
 import br.ufrn.imd.middleware.annotations.Get;
 import br.ufrn.imd.middleware.annotations.Post;
 import br.ufrn.imd.middleware.annotations.RequestMap;
+import br.ufrn.imd.patterns.RemoteObject;
 import br.ufrn.imd.patterns.ServerRequestHandler;
 
 public class Nelionator {
 	private HttpServer server;
 	
-	public String addMethods(Object object) {
+	public String addComponents(Object object) {
 		Class<?> clazz = object.getClass();
 		
 		String baseRoute = "";

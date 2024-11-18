@@ -2,8 +2,6 @@ package br.ufrn.imd.patterns;
 
 import java.lang.reflect.Method;
 
-import br.ufrn.imd.middleware.RemoteObject;
-
 public class Invoker {
 	public static String invoke(Method method, Object instance, String requestBody) {
 		try {

@@ -1,4 +1,4 @@
-package br.ufrn.imd.middleware;
+package br.ufrn.imd.patterns;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
