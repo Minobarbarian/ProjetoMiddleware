@@ -2,6 +2,7 @@ package br.ufrn.imd.patterns.identification;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Lookup {
 	private static final Map<String, Object> lookupTable = new HashMap<>();
@@ -20,5 +21,9 @@ public class Lookup {
 
     public static boolean contains(String nameOrId) {
         return lookupTable.containsKey(nameOrId);
+    }
+    
+    public static Set<String> getRoutes() {
+        return lookupTable.keySet();
     }
 }
