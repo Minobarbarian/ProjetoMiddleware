@@ -61,6 +61,6 @@ public class Nelionator {
 		}
 		
 		server.start();	
-		System.out.println("Server started on port " + port);
+		System.out.println("Nelionator started on port " + port);
 	}
 }
