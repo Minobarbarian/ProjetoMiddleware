@@ -31,7 +31,7 @@ public class Invoker {
 		}
 		
 		try {
-			Class<?> clazz = Class.forName(remoteReference.getObjectId().getId());
+			Class<?> clazz = remoteReference.getClazz();
 			Method target = findMethod(clazz, httpMethod, route);
 			
 			if(target == null) {
@@ -49,6 +49,8 @@ public class Invoker {
 	}
 	
 	private Method findMethod(Class<?> clazz, String httpMethod, String route) {
+		System.out.println(route);
+		System.out.println(httpMethod);
 		for(Method method : clazz.getDeclaredMethods()) {
 			if(matchesAnnotation(method, httpMethod, route)) {
 				return method;

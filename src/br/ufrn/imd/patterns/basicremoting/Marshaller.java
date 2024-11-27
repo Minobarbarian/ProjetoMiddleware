@@ -22,13 +22,30 @@ public class Marshaller {
 	}
 	
 	public HttpMessage unmarshall(BufferedReader reader) throws IOException {
-		String jsonMessage = reader.readLine();
-		JSONObject json = new JSONObject(jsonMessage);
-		
-		return new HttpMessage(
-				json.getString("method"),
-				json.getString("resource"),
-				json.getJSONObject("body")
-		);
+		StringBuilder rawRequest = new StringBuilder();
+	    String line;
+	    
+	    while ((line = reader.readLine()) != null && !line.isEmpty()) {
+	        rawRequest.append(line).append("\n");
+	    }
+	    
+	    String[] requestLine = rawRequest.toString().split("\n")[0].split(" ");
+	    String method = requestLine[0];
+	    String resource = requestLine[1];
+	    
+	    String jsonMessage = null;
+	    if (reader.ready()) {
+	        jsonMessage = reader.readLine();
+	    }
+	    
+	    if (jsonMessage != null) {
+	        JSONObject json = new JSONObject(jsonMessage);
+	        return new HttpMessage(
+	            method,
+	            resource,
+	            json.getJSONObject("body")
+	        );
+	    }
+	    return new HttpMessage(method, resource, new JSONObject());
 	}
 }

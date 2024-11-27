@@ -53,7 +53,6 @@ public class ServerRequestHandler {
 		try {
 			HttpMessage request = readRequest(clientSocket);
 			HttpMessage response = invoker.invoke(request);
-			
 			sendResponse(clientSocket, response);
 		} catch (Exception e) {
 			String errorResponse = RemotingError.handleError(e);
@@ -74,7 +73,8 @@ public class ServerRequestHandler {
 	
 	private HttpMessage readRequest(Socket clientSocket) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-			return marshaller.unmarshall(reader);
+			HttpMessage request = marshaller.unmarshall(reader);
+			return request;
 		}
 	}
 	
