@@ -10,9 +10,9 @@ public class SmartHome {
 	private String lightStat;
 	private int thermostatTemp;
 	
-	public SmartHome(String lightStat, int thermostatTemp) {
-		this.lightStat = lightStat;
-		this.thermostatTemp = thermostatTemp;
+	public SmartHome() {
+		this.lightStat = "OFF";
+		this.thermostatTemp = 22;
 	}
 	
 	public String getLightStat() {
@@ -31,12 +31,16 @@ public class SmartHome {
 	}
 	
 	@Post(router = "/regulate")
-	public void setThermostatTemp(JSONObject jsonObject) {
+	public JSONObject setThermostatTemp(JSONObject jsonObject) {
 		this.thermostatTemp = jsonObject.getInt("var1");
+		JSONObject result = new JSONObject();
+		result.put("status", "success");
+		result.put("Temperature", thermostatTemp);
+		return result;
 	}
 	
 	@Post(router = "/switch")
-	public void lightSwitch() {
+	public JSONObject lightSwitch() {
 		switch(this.lightStat) {
 		case "ON":
 			this.lightStat = "OFF";
@@ -45,5 +49,9 @@ public class SmartHome {
 			this.lightStat = "ON";
 			break;
 		}
+		JSONObject result = new JSONObject();
+		result.put("status", "success");
+		result.put("Light", lightStat);
+		return result;
 	}
 }

@@ -1,24 +1,28 @@
 package br.ufrn.imd.patterns.identification;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import br.ufrn.imd.middleware.annotations.RequestMap;
 
 public class Lookup {
-	private static final Map<String, Object> lookupTable = new HashMap<>();
+	private final HashMap<String, AbsoluteObjectReference> routes;
 	
-	public static void registerObject(String name, Object object) {
-        lookupTable.put(name, object);
-    }
+	public Lookup() {
+		routes = new HashMap<>();
+	}
+	
+	public void registerRoute(Class<?> clazz, int port) {
+		if (clazz.isAnnotationPresent(RequestMap.class)) {
+			RequestMap anno = clazz.getAnnotation(RequestMap.class);
+			String route = anno.router();
+			
+			ObjectId objectId = new ObjectId();
+			AbsoluteObjectReference reference = new AbsoluteObjectReference(objectId, "localhost", port);
+			routes.put(route, reference);
+		}
+	}
 
-    public static void registerObject(ObjectId objectId, Object object) {
-        lookupTable.put(objectId.toString(), object);
-    }
-
-    public static Object getObject(String nameOrId) {
-        return lookupTable.get(nameOrId);
-    }
-
-    public static boolean contains(String nameOrId) {
-        return lookupTable.containsKey(nameOrId);
+    public AbsoluteObjectReference getRoute(String route) {
+        return routes.get(route);
     }
 }

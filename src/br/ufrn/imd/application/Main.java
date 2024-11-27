@@ -8,13 +8,12 @@ import br.ufrn.imd.middleware.Nelionator;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		SmartHome smart = new SmartHome("OFF", 22);
+		SmartHome smart = new SmartHome();
 		
-		Nelionator server = new Nelionator();
+		Nelionator server = new Nelionator(4242);
 		
 		server.addComponents(smart);
 		
-		server.start(4242);
+		server.start();
 	}
-
 }
