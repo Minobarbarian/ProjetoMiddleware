@@ -72,15 +72,15 @@ public class ServerRequestHandler {
 	}
 	
 	private HttpMessage readRequest(Socket clientSocket) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-			HttpMessage request = marshaller.unmarshall(reader);
-			return request;
-		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		return marshaller.unmarshall(reader);
 	}
 	
 	private void sendResponse(Socket clientSocket, HttpMessage response) throws IOException {
-		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
-			marshaller.marshall(writer, response);
-		}
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+		writer.write("HTTP/1.1 200 OK\r\n");
+		
+		marshaller.marshall(writer, response);
+		writer.flush();
 	}
 }

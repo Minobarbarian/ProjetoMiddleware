@@ -9,6 +9,7 @@ import br.ufrn.imd.middleware.annotations.Delete;
 import br.ufrn.imd.middleware.annotations.Get;
 import br.ufrn.imd.middleware.annotations.Post;
 import br.ufrn.imd.middleware.annotations.Put;
+import br.ufrn.imd.middleware.annotations.RequestMap;
 import br.ufrn.imd.patterns.identification.Lookup;
 import br.ufrn.imd.patterns.identification.AbsoluteObjectReference;
 
@@ -40,8 +41,14 @@ public class Invoker {
 			}
 			
 			Object remoteObject = clazz.getDeclaredConstructor().newInstance();
-			var result = (JSONObject) target.invoke(remoteObject, request.body());
-			return new HttpMessage(request.method(), request.resource(), result);
+			Object result;
+			
+			if(target.getParameterCount() == 0) {
+				result = target.invoke(remoteObject);
+			} else {
+				result = (JSONObject) target.invoke(remoteObject, request.body());
+			}
+			return new HttpMessage(request.method(), request.resource(), (JSONObject) result);
 		} catch (Exception e) {
 			String errorResponse =  RemotingError.handleError(e);
 			return RemotingError.createErrorHttpMessage(errorResponse, httpMethod, route);
@@ -49,8 +56,6 @@ public class Invoker {
 	}
 	
 	private Method findMethod(Class<?> clazz, String httpMethod, String route) {
-		System.out.println(route);
-		System.out.println(httpMethod);
 		for(Method method : clazz.getDeclaredMethods()) {
 			if(matchesAnnotation(method, httpMethod, route)) {
 				return method;
@@ -60,10 +65,13 @@ public class Invoker {
 	}
 	
 	private boolean matchesAnnotation(Method method, String httpMethod, String route) {
+		RequestMap classAnnotation = method.getDeclaringClass().getAnnotation(RequestMap.class);
+	    String basePath = (classAnnotation != null) ? classAnnotation.router() : "";
 		switch(httpMethod) {
 		case "GET":
 			if(method.isAnnotationPresent(Get.class)) {
-				return method.getAnnotation(Get.class).router().equals(route);
+				String fullRoute = basePath + method.getAnnotation(Get.class).router();
+				return fullRoute.equals(route);
 			}
 			break;
 		case "PUT":
