@@ -29,7 +29,10 @@ public class RemotingError {
 	private static String getErrorCode(Exception e) {
 		if(e instanceof IllegalArgumentException) {
 			return "400";
-		} else if(e instanceof NullPointerException || e instanceof IOException) {
+		} else if(
+					e instanceof NullPointerException ||
+					e instanceof IOException
+				) {
 			return "500";
 		} else {
 			return "500";
@@ -43,7 +46,7 @@ public class RemotingError {
 			return "Server misse a value.";
 		} else if(e instanceof IOException) {
 			return "I/O error.";
-		} else {
+		}else {
 			return "Unexpected error.";
 		}
 	}

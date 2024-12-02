@@ -1,7 +1,6 @@
 package br.ufrn.imd.patterns.basicremoting;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 import org.json.JSONObject;
@@ -10,15 +9,13 @@ import br.ufrn.imd.message.HttpMessage;
 
 public class Marshaller {
 	
-	public void marshall(BufferedWriter writer, HttpMessage message) throws IOException {
+	public String marshall(HttpMessage message) throws IOException {
 		JSONObject json = new JSONObject();
 		json.put("method", message.method());
 		json.put("resource", message.resource());
 		json.put("body", message.body());
 		
-		writer.write(json.toString());
-		writer.newLine();
-		writer.flush();
+		return json.toString();
 	}
 	
 	public HttpMessage unmarshall(BufferedReader reader) throws IOException {

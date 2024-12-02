@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,8 +43,8 @@ public class ServerRequestHandler {
 			try {
 				Socket clientSocket = servSocket.accept();
 				execService.execute(() -> handleRequest(clientSocket));
-			} catch (IOException e) {
-				String errorResponse = RemotingError.handleError(e);
+	        } catch (IOException IOe) {
+				String errorResponse = RemotingError.handleError(IOe);
 				System.err.println(errorResponse);
 			}
 		}
@@ -78,9 +79,14 @@ public class ServerRequestHandler {
 	
 	private void sendResponse(Socket clientSocket, HttpMessage response) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+		String responseBody = marshaller.marshall(response);
 		writer.write("HTTP/1.1 200 OK\r\n");
-		
-		marshaller.marshall(writer, response);
+		writer.write("Content-Type: application/json\r\n");
+		byte[] responseBytes = responseBody.getBytes(StandardCharsets.UTF_8);
+		writer.write("Content-Length: " + responseBytes.length + "\r\n");
+	    writer.write("\r\n");
+	    
+		writer.write(responseBody);
 		writer.flush();
 	}
 }
