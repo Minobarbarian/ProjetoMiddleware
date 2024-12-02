@@ -2,6 +2,8 @@ package br.ufrn.imd.business;
 
 import br.ufrn.imd.middleware.annotations.RequestMap;
 import br.ufrn.imd.middleware.annotations.Post;
+import br.ufrn.imd.middleware.annotations.Put;
+import br.ufrn.imd.middleware.annotations.Delete;
 import br.ufrn.imd.middleware.annotations.Get;
 import org.json.JSONObject;
 
@@ -54,4 +56,29 @@ public class SmartHome {
 		result.put("Light", lightStat);
 		return result;
 	}
+	
+	@Put(router = "/update")
+    public JSONObject updateSettings(JSONObject jsonObject) {
+        if (jsonObject.has("Light")) {
+            this.lightStat = jsonObject.getString("Light");
+        }
+        if (jsonObject.has("Temperature")) {
+            this.thermostatTemp = jsonObject.getInt("Temperature");
+        }
+        JSONObject result = new JSONObject();
+        result.put("status", "success");
+        result.put("Light", lightStat);
+        result.put("Temperature", thermostatTemp);
+        return result;
+    }
+
+    @Delete(router = "/reset")
+    public JSONObject resetSettings() {
+        this.lightStat = "OFF";
+        this.thermostatTemp = 22;
+        JSONObject result = new JSONObject();
+        result.put("status", "success");
+        result.put("message", "Settings have been reset to default");
+        return result;
+    }
 }
