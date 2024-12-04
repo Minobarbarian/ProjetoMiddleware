@@ -67,33 +67,33 @@ public class Invoker {
 	private boolean matchesAnnotation(Method method, String httpMethod, String route) {
 		RequestMap classAnnotation = method.getDeclaringClass().getAnnotation(RequestMap.class);
 	    String basePath = (classAnnotation != null) ? classAnnotation.router() : "";
-	    String fullRoute = basePath;
+	    String fullRoute = basePath + getRouteForMethod(method, httpMethod);
+		return fullRoute.equals(route);
+	}
+	
+	private String getRouteForMethod(Method method, String httpMethod) {
 		switch(httpMethod) {
-		case "GET":
-			if(method.isAnnotationPresent(Get.class)) {
-				fullRoute += method.getAnnotation(Get.class).router();
-				return fullRoute.equals(route);
-			}
-			break;
-		case "PUT":
-			if(method.isAnnotationPresent(Put.class)) {
-				fullRoute += method.getAnnotation(Put.class).router();
-				return fullRoute.equals(route);
-			}
-			break;
-		case "POST":
-			if(method.isAnnotationPresent(Post.class)) {
-				fullRoute += method.getAnnotation(Post.class).router();
-				return fullRoute.equals(route);
-			}
-			break;
-		case "DELETE":
-			if(method.isAnnotationPresent(Delete.class)) {
-				fullRoute += method.getAnnotation(Delete.class).router();
-				return fullRoute.equals(route);
-			}
-			break;
+        case "GET":
+            if (method.isAnnotationPresent(Get.class)) {
+                return method.getAnnotation(Get.class).router();
+            }
+            break;
+        case "PUT":
+            if (method.isAnnotationPresent(Put.class)) {
+                return method.getAnnotation(Put.class).router();
+            }
+            break;
+        case "POST":
+            if (method.isAnnotationPresent(Post.class)) {
+                return method.getAnnotation(Post.class).router();
+            }
+            break;
+        case "DELETE":
+            if (method.isAnnotationPresent(Delete.class)) {
+                return method.getAnnotation(Delete.class).router();
+            }
+            break;
 		}
-		return false;
+		return "";
 	}
 }
