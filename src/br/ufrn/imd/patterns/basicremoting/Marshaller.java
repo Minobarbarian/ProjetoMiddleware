@@ -30,7 +30,27 @@ public class Marshaller {
 	    String method = requestLine[0];
 	    String resource = requestLine[1];
 	    
-	    String jsonMessage = null;
+	    int contentLength = 0;
+	    String[] headers = rawRequest.toString().split("\n");
+	    for (String header : headers) {
+	        if (header.startsWith("Content-Length:")) {
+	            contentLength = Integer.parseInt(header.split(":")[1].trim());
+	            break;
+	        }
+	    }
+	    
+	    char[] bodyChars = new char[contentLength];
+	    reader.read(bodyChars, 0, contentLength);
+	    String jsonMessage = new String(bodyChars);
+	    System.out.println("Received JSON message: " + jsonMessage);
+	    JSONObject json = new JSONObject(jsonMessage);
+	    return new HttpMessage(
+	        method,
+	        resource,
+	        json.getJSONObject("body")
+	    );
+	    
+	    /*String jsonMessage = null;
 	    if (reader.ready()) {
 	        jsonMessage = reader.readLine();
 	    }
@@ -43,6 +63,6 @@ public class Marshaller {
 	            json.getJSONObject("body")
 	        );
 	    }
-	    return new HttpMessage(method, resource, new JSONObject());
+	    return new HttpMessage(method, resource, new JSONObject());*/
 	}
 }
