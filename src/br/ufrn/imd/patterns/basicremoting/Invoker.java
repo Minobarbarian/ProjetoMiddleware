@@ -67,26 +67,30 @@ public class Invoker {
 	private boolean matchesAnnotation(Method method, String httpMethod, String route) {
 		RequestMap classAnnotation = method.getDeclaringClass().getAnnotation(RequestMap.class);
 	    String basePath = (classAnnotation != null) ? classAnnotation.router() : "";
+	    String fullRoute = basePath;
 		switch(httpMethod) {
 		case "GET":
 			if(method.isAnnotationPresent(Get.class)) {
-				String fullRoute = basePath + method.getAnnotation(Get.class).router();
+				fullRoute += method.getAnnotation(Get.class).router();
 				return fullRoute.equals(route);
 			}
 			break;
 		case "PUT":
 			if(method.isAnnotationPresent(Put.class)) {
-				return method.getAnnotation(Put.class).router().equals(route);
+				fullRoute += method.getAnnotation(Put.class).router();
+				return fullRoute.equals(route);
 			}
 			break;
 		case "POST":
 			if(method.isAnnotationPresent(Post.class)) {
-				return method.getAnnotation(Post.class).router().equals(route);
+				fullRoute += method.getAnnotation(Post.class).router();
+				return fullRoute.equals(route);
 			}
 			break;
 		case "DELETE":
 			if(method.isAnnotationPresent(Delete.class)) {
-				return method.getAnnotation(Delete.class).router().equals(route);
+				fullRoute += method.getAnnotation(Delete.class).router();
+				return fullRoute.equals(route);
 			}
 			break;
 		}
