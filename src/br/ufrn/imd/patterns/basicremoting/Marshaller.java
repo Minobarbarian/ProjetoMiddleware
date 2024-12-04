@@ -42,7 +42,7 @@ public class Marshaller {
 	    char[] bodyChars = new char[contentLength];
 	    reader.read(bodyChars, 0, contentLength);
 	    String jsonMessage = new String(bodyChars);
-	    System.out.println("Received JSON message: " + jsonMessage);
+	    //System.out.println("Received JSON message: " + jsonMessage);
 	    JSONObject json = new JSONObject(jsonMessage);
 	    return new HttpMessage(
 	        method,
