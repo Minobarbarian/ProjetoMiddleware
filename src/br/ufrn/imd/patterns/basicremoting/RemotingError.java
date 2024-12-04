@@ -10,13 +10,12 @@ public class RemotingError {
 	public static String handleError(Exception e) {
 		e.printStackTrace();
 		
-		String errorCode = getErrorCode(e);
-		String errorMessage = getErrorMessage(e);
+		ErrorInfo errorInfo = getErrorInfo(e);
 		
 		JSONObject errorResponse = new JSONObject();
 		errorResponse.put("error", true);
-		errorResponse.put("code", errorCode);
-		errorResponse.put("message", errorMessage);
+		errorResponse.put("code", errorInfo.getCode());
+		errorResponse.put("message", errorInfo.getMessage());
 		
         return errorResponse.toString();
     }
@@ -26,28 +25,33 @@ public class RemotingError {
 		return new HttpMessage(method, resource, body);
 	}
 	
-	private static String getErrorCode(Exception e) {
-		if(e instanceof IllegalArgumentException) {
-			return "400";
-		} else if(
-					e instanceof NullPointerException ||
-					e instanceof IOException
-				) {
-			return "500";
-		} else {
-			return "500";
-		}
+	private static ErrorInfo getErrorInfo(Exception e) {
+		if (e instanceof IllegalArgumentException) {
+            return new ErrorInfo("400", "Invalid Argument.");
+        } else if (e instanceof NullPointerException) {
+            return new ErrorInfo("500", "Server missed a value.");
+        } else if (e instanceof IOException) {
+            return new ErrorInfo("500", "I/O error.");
+        } else {
+            return new ErrorInfo("500", "Unexpected error.");
+        }
 	}
 	
-	private static String getErrorMessage(Exception e) {
-		if(e instanceof IllegalArgumentException) {
-			return "Invalid Argument.";
-		} else if(e instanceof NullPointerException) {
-			return "Server misse a value.";
-		} else if(e instanceof IOException) {
-			return "I/O error.";
-		}else {
-			return "Unexpected error.";
-		}
-	}
+	private static class ErrorInfo {
+        private final String code;
+        private final String message;
+        
+        public ErrorInfo(String code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 }
