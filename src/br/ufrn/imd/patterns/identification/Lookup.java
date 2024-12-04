@@ -20,29 +20,30 @@ public class Lookup {
 			RequestMap classAnno = clazz.getAnnotation(RequestMap.class);
 			String baseRoute = classAnno.router();
 			for (java.lang.reflect.Method method : clazz.getDeclaredMethods()) {
-				if(method.isAnnotationPresent(Get.class)) {
-					Get getAnno = method.getAnnotation(Get.class);
-					String route = baseRoute + getAnno.router();
-					System.out.println("Registering GET route: " + route);
-	                registerRouteForMethod(clazz, route, port);
-				} else if (method.isAnnotationPresent(Post.class)) {
-	                Post postAnno = method.getAnnotation(Post.class);
-	                String route = baseRoute + postAnno.router();
-	                System.out.println("Registering POST route: " + route);
-	                registerRouteForMethod(clazz, route, port);
-	            } else if (method.isAnnotationPresent(Put.class)) {
-	            	Put putAnno = method.getAnnotation(Put.class);
-	                String route = baseRoute + putAnno.router();
-	                System.out.println("Registering PUT route: " + route);
-	                registerRouteForMethod(clazz, route, port);
-	            } else if (method.isAnnotationPresent(Delete.class)) {
-	            	Delete deleteAnno = method.getAnnotation(Delete.class);
-	                String route = baseRoute + deleteAnno.router();
-	                System.out.println("Registering DELETE route: " + route);
-	                registerRouteForMethod(clazz, route, port);
-	            }
+				registerRouteForAnnotatedMethod(clazz, baseRoute, method, port);
 			}
 		}
+	}
+	
+	private void registerRouteForAnnotatedMethod(Class<?> clazz, String baseRoute, java.lang.reflect.Method method, int port) {
+		String route = null;
+        if (method.isAnnotationPresent(Get.class)) {
+            route = baseRoute + method.getAnnotation(Get.class).router();
+            System.out.println("Registering GET route: " + route);
+        } else if (method.isAnnotationPresent(Post.class)) {
+            route = baseRoute + method.getAnnotation(Post.class).router();
+            System.out.println("Registering POST route: " + route);
+        } else if (method.isAnnotationPresent(Put.class)) {
+            route = baseRoute + method.getAnnotation(Put.class).router();
+            System.out.println("Registering PUT route: " + route);
+        } else if (method.isAnnotationPresent(Delete.class)) {
+            route = baseRoute + method.getAnnotation(Delete.class).router();
+            System.out.println("Registering DELETE route: " + route);
+        }
+        
+        if (route != null) {
+            registerRouteForMethod(clazz, route, port);
+        }
 	}
 	
 	private void registerRouteForMethod(Class<?> clazz, String route, int port) {
