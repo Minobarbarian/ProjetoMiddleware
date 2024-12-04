@@ -33,8 +33,7 @@ public class ServerRequestHandler {
 		try {
 			this.servSocket = new ServerSocket(port);
 		} catch (Exception e) {
-			String errorResponse = RemotingError.handleError(e);
-			System.err.println(errorResponse);
+			handleError(e);
 		}
 	}
 	
@@ -44,8 +43,7 @@ public class ServerRequestHandler {
 				Socket clientSocket = servSocket.accept();
 				execService.execute(() -> handleRequest(clientSocket));
 	        } catch (IOException IOe) {
-				String errorResponse = RemotingError.handleError(IOe);
-				System.err.println(errorResponse);
+	        	handleError(IOe);
 			}
 		}
 	}
@@ -58,17 +56,9 @@ public class ServerRequestHandler {
 		} catch (Exception e) {
 			String errorResponse = RemotingError.handleError(e);
 			HttpMessage errorHttpMessage = RemotingError.createErrorHttpMessage(errorResponse,"ERROR","response");
-			try {
-				sendResponse(clientSocket, errorHttpMessage);
-			} catch (IOException ioException) {
-				System.err.println("Failed to send error response: " + ioException.getMessage());
-			}
+			sendResponseWithErrorHandling(clientSocket, errorHttpMessage);
 		} finally {
-			try {
-				clientSocket.close();
-			} catch (IOException e) {
-				System.err.println("Failed to close client socket: " + e.getMessage());
-			}
+			closeSocket(clientSocket);
 		}
 	}
 	
@@ -88,5 +78,26 @@ public class ServerRequestHandler {
 	    
 		writer.write(responseBody);
 		writer.flush();
+	}
+	
+	private void sendResponseWithErrorHandling(Socket clientSocket, HttpMessage errorHttpMessage) {
+        try {
+            sendResponse(clientSocket, errorHttpMessage);
+        } catch (IOException ioException) {
+            System.err.println("Failed to send error response: " + ioException.getMessage());
+        }
+	}
+	
+	private void closeSocket(Socket clientSocket) {
+		try {
+            clientSocket.close();
+        } catch (IOException e) {
+            handleError(e);
+        }
+	}
+	
+	private void handleError(Exception e) {
+		String errorResponse = RemotingError.handleError(e);
+        System.err.println(errorResponse);
 	}
 }
