@@ -15,6 +15,10 @@ public class Nelionator {
 		this.lookup = new Lookup();
 		this.invoker = new Invoker(lookup);
 		this.port = port;
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            shutdown();
+        }));
 	}
 	
 	public void addComponents(Object object) {
@@ -24,5 +28,12 @@ public class Nelionator {
 	
 	public void start() throws IOException {
 		requestHandler = new ServerRequestHandler(port, invoker);
+	}
+	
+	public void shutdown() {
+		if(requestHandler != null) {
+			requestHandler.shutdown();
+			System.out.println("Server shutdown successfully via shutdown hook.");
+		}
 	}
 }
