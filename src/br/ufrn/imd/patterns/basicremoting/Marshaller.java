@@ -22,14 +22,17 @@ public class Marshaller {
 		StringBuilder rawRequest = new StringBuilder();
 	    String line;
 	    
+	    //lê tudo até não ter mais linhas e armazena no rawRequest
 	    while ((line = reader.readLine()) != null && !line.isEmpty()) {
 	        rawRequest.append(line).append("\n");
 	    }
 	    
+	    //separa o conteudo do rawRequest em coisas uteis
 	    String[] requestLine = rawRequest.toString().split("\n")[0].split(" ");
 	    String method = requestLine[0];
 	    String resource = requestLine[1];
 	    
+	    //pega os cabeçalhos do rawRequest
 	    int contentLength = 0;
 	    String[] headers = rawRequest.toString().split("\n");
 	    for (String header : headers) {
@@ -39,31 +42,19 @@ public class Marshaller {
 	        }
 	    }
 	    
-	    
-	    char[] bodyChars = new char[contentLength];
-	    reader.read(bodyChars, 0, contentLength);
-	    System.out.println(bodyChars);
-	    String jsonMessage = new String(bodyChars);
-	    JSONObject json = new JSONObject(jsonMessage);
+	    //pega o corpo (se tiver) do rawRequest
+	    JSONObject jsonBody = new JSONObject();
+	    if (contentLength > 0) {
+	    	String[] parts = rawRequest.toString().split("\n\n", 2);
+	    	String body = parts.length > 1 ? parts[1] : "";
+	    	jsonBody = body.isEmpty() ? new JSONObject() : new JSONObject(body);
+	    }
+
+	    //compoe a mensagem http
 	    return new HttpMessage(
 	        method,
 	        resource,
-	        json.getJSONObject("body")
+	        jsonBody.optJSONObject("body") != null ? jsonBody.getJSONObject("body") : new JSONObject()
 	    );
-	    
-	    /*String jsonMessage = null;
-	    if (reader.ready()) {
-	        jsonMessage = reader.readLine();
-	    }
-	    
-	    if (jsonMessage != null) {
-	        JSONObject json = new JSONObject(jsonMessage);
-	        return new HttpMessage(
-	            method,
-	            resource,
-	            json.getJSONObject("body")
-	        );
-	    }
-	    return new HttpMessage(method, resource, new JSONObject());*/
 	}
 }

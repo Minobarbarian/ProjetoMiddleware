@@ -13,6 +13,8 @@ import br.ufrn.imd.message.HttpMessage;
 import br.ufrn.imd.patterns.identification.Lookup;
 import br.ufrn.imd.patterns.identification.AbsoluteObjectReference;
 
+
+
 public class Invoker {
 	private final Lookup lookup;
 	
@@ -23,6 +25,8 @@ public class Invoker {
 	public HttpMessage invoke(HttpMessage request) {
 		String route = request.resource();
 		String httpMethod = request.method();
+		
+		System.out.println("Invoker received request: " + httpMethod + " " + route);
 		
 		AbsoluteObjectReference remoteReference = lookup.getRoute(route);
 		
@@ -39,6 +43,8 @@ public class Invoker {
 				String errorResponse = RemotingError.handleError(new IllegalArgumentException("No matching method found"));
                 return RemotingError.createErrorHttpMessage(errorResponse, httpMethod, route);
 			}
+			
+			System.out.println("Invoking method: " + target.getName());
 			
 			Object remoteObject = clazz.getDeclaredConstructor().newInstance();
 			Object result;

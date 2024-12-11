@@ -49,7 +49,9 @@ public class Lookup {
 	private void registerRouteForMethod(Class<?> clazz, String route, int port) {
 	    ObjectId objectId = new ObjectId();
 	    AbsoluteObjectReference reference = new AbsoluteObjectReference(objectId, clazz, "localhost", port);
-	    routes.put(route, reference);
+	    if(!routes.containsKey(route)) {
+		    routes.put(route, reference);
+	    }
 	}
 
     public AbsoluteObjectReference getRoute(String route) {
