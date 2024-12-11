@@ -20,29 +20,25 @@ public class Marshaller {
         StringBuilder rawRequest = new StringBuilder();
         String line;
         
-        // Read headers until the empty line
+        // Le cabeçalhos ate a linha vazia
         while ((line = reader.readLine()) != null) {
             rawRequest.append(line).append("\n");
             
-            // Check for the empty line separating headers from body
+            // Ve se chegou na linha vazia que separa os cabeçalhos do corpo
             if (line.trim().isEmpty()) {
-                break;  // Stop reading once we hit the empty line
+                break;
             }
         }
         
-        // Debugging output for headers and request
-        System.out.println("RAW REQUEST IS:");
-        System.out.println(rawRequest);
-        
-        // Parse the request line (method and resource)
+        // Guarda o metodo e o recurso
         String[] requestLine = rawRequest.toString().split("\n")[0].split(" ");
         String method = requestLine[0];
         String resource = requestLine[1];
         
-        // Initialize Content-Length to 0
+        // Inicializa Content-Length
         int contentLength = 0;
         
-        // Extract headers and find Content-Length
+        // Extrai cabeçalhos e descobre a largura do conteudo
         String[] headers = rawRequest.toString().split("\n");
         for (String header : headers) {
             if (header.startsWith("Content-Length:")) {
@@ -51,29 +47,24 @@ public class Marshaller {
             }
         }
         
-        // Handle the body if there is one
+        // Lida com o corpo se tiver
         JSONObject jsonBody = new JSONObject();
         if (contentLength > 0) {
-            // Read the body based on Content-Length
             char[] buffer = new char[contentLength];
-            int bytesRead = reader.read(buffer, 0, contentLength);  // Read the exact body size
+            int bytesRead = reader.read(buffer, 0, contentLength);
             if (bytesRead > 0) {
                 String body = new String(buffer, 0, bytesRead).trim();
-                System.out.println("Body Content Read: " + body);  // Debugging log for body content
                 
-                // Check if body is non-empty and parse it into JSON
                 if (!body.isEmpty()) {
                     try {
-                        jsonBody = new JSONObject(body);  // Parse the body into JSON
-                        System.out.println("Parsed JSON Body: " + jsonBody);  // Debugging log for JSON body
+                        jsonBody = new JSONObject(body);
                     } catch (Exception e) {
-                        System.out.println("Error parsing JSON body: " + e.getMessage());
                     }
                 }
             }
         }
         
-        // Return the HttpMessage object with the parsed information
+        // Retorna HttpMessage com informaçao esclarecida
         return new HttpMessage(
             method,
             resource,
