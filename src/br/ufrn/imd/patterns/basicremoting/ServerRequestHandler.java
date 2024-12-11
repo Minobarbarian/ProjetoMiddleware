@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -121,18 +120,6 @@ public class ServerRequestHandler {
             System.err.println("Failed to send error response: " + ioException.getMessage());
         }
 	}
-	
-	/*private void closeSocket(Socket clientSocket) {
-		if (clientSocket != null && !clientSocket.isClosed()) {
-			try {
-				System.out.println("closed the socket");
-	            clientSocket.close();
-	        } catch (IOException e) {
-	        	System.out.println("failed to close");
-	            handleError(e);
-	        }
-		}
-	}*/
 	
 	private void handleError(Exception e) {
 		String errorResponse = RemotingError.handleError(e);
