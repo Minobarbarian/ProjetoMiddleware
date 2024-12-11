@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,7 +59,7 @@ public class ServerRequestHandler {
 	}
 	
 	public void acceptConnections() {
-		while(isRunning) {
+		while(!Thread.currentThread().isInterrupted()) {
 			try {
 				Socket clientSocket = servSocket.accept();
                 System.out.println("Connection accepted: " + clientSocket.getRemoteSocketAddress());

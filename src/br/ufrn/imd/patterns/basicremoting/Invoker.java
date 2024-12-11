@@ -26,7 +26,7 @@ public class Invoker {
 		String route = request.resource();
 		String httpMethod = request.method();
 		
-		System.out.println("Invoker received request: " + httpMethod + " " + route);
+		System.out.println("Invoker received request: " + httpMethod + " " + route + " " + request.body());
 		
 		AbsoluteObjectReference remoteReference = lookup.getRoute(route);
 		
@@ -52,6 +52,7 @@ public class Invoker {
 			if(target.getParameterCount() == 0) {
 				result = target.invoke(remoteObject);
 			} else {
+				System.out.println("Invoking on: " + request.body() + "which has "+target.getParameterCount()+ " parameters");
 				result = (JSONObject) target.invoke(remoteObject, request.body());
 			}
 			return new HttpMessage(request.method(), request.resource(), (JSONObject) result);
