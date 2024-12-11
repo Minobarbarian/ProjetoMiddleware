@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 
 import org.json.JSONObject;
 
+import br.ufrn.imd.annotations.Get;
+import br.ufrn.imd.annotations.Post;
+import br.ufrn.imd.annotations.Put;
+import br.ufrn.imd.annotations.RequestMap;
+import br.ufrn.imd.annotations.Delete;
 import br.ufrn.imd.message.HttpMessage;
-import br.ufrn.imd.middleware.annotations.Delete;
-import br.ufrn.imd.middleware.annotations.Get;
-import br.ufrn.imd.middleware.annotations.Post;
-import br.ufrn.imd.middleware.annotations.Put;
-import br.ufrn.imd.middleware.annotations.RequestMap;
 import br.ufrn.imd.patterns.identification.Lookup;
 import br.ufrn.imd.patterns.identification.AbsoluteObjectReference;
 

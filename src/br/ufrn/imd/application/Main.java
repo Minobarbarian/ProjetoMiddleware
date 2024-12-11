@@ -2,7 +2,7 @@ package br.ufrn.imd.application;
 
 import java.io.IOException;
 
-import br.ufrn.imd.business.SmartHome;
+import br.ufrn.imd.businness.SmartHome;
 import br.ufrn.imd.middleware.Nelionator;
 
 public class Main {
